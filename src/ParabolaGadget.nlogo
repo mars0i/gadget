@@ -1,7 +1,7 @@
 globals [
   on-first-curve?
   parabolic-scaling-factor
-  scaled-initial-x1
+  scaled-initial-x
   curve-shape
   curve-size
   path-shape
@@ -12,7 +12,7 @@ globals [
 
 to init-vars
   set parabolic-scaling-factor max-pxcor / 2 ; i.e. divide width by 4, i.e. 2^2
-  set scaled-initial-x1 min-pxcor + (initial-x1 * 2 * max-pxcor)
+  set scaled-initial-x min-pxcor + (initial-x * 2 * max-pxcor)
   set on-first-curve? true
   set curve-shape "circle"
   set curve-size 2
@@ -27,7 +27,7 @@ to setup
   init-vars
   make-line
   make-parabola
-  ask (patch scaled-initial-x1 (linear scaled-initial-x1))
+  ask (patch scaled-initial-x (linear scaled-initial-x))
      [sprout 1 [set path-turtle self
                 pen-down
                 set size path-size
@@ -119,8 +119,8 @@ SLIDER
 90
 179
 123
-initial-x1
-initial-x1
+initial-x
+initial-x
 0
 1
 0.2
