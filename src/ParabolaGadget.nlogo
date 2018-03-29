@@ -206,7 +206,9 @@ Try setting initial-x to different values.
 ## CREDITS AND REFERENCES
 
 NetLogo model by Marshall Abrams (c) 2018 (GPL 3.0). 
+
 An implementation of a mathematical device described in:
+
 Wayne Myrvold, *Beyond Chance and Credence*, MS 2017.
 @#$#@#$#@
 default
