@@ -1,28 +1,36 @@
+globals [parabolic-normalizer]
+
 to setup
   clear-all
+  set parabolic-normalizer max-pxcor / 2 ; i.e. divide width by 4, i.e. 2^2
   make-line
   make-parabola
 end
 
 to make-line
-  ask patches with [pxcor = pycor] [display-point-at-patch red]
+  ask patches with [pxcor = (linear pycor)] [display-point-at-patch red]
 end
 
 to make-parabola
-  ask patches with [pycor = (parabola-of-x pxcor)] [display-point-at-patch green]
+  ask patches with [pycor = (parabolic pxcor)] [display-point-at-patch green]
 end
 
-to-report parabola-of-x [x]
-  let y max-pycor - (round ((x ^ 2) / 100))
-  ;print (list x y)
+to-report parabolic [x]
+  let y max-pycor - (round ((x ^ 2) / parabolic-normalizer))
   report y
 end
 
-to-report is-on-parabola
-  let x round pxcor / 2
-  let y round (max-pycor - (x ^ 2))
-  print (list x pxcor y pycor)
-  report (pxcor = x and pycor = y)
+;; kinda silly, but allows substituation with another function later
+to-report linear [x]
+  report x
+end
+
+to-report is-on-original-path [turt]
+  let is-on-path false
+  ask turt [if-else xcor = (linear xcor)
+             [set is-on-path true]
+             [set is-on-path false]]
+  report is-on-path
 end
 
 to display-point-at-patch [point-color]
@@ -34,10 +42,10 @@ end
 GRAPHICS-WINDOW
 210
 10
-621
-442
-200
-200
+619
+420
+-1
+-1
 1.0
 1
 10
@@ -416,9 +424,8 @@ false
 0
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
-
 @#$#@#$#@
-NetLogo 5.3
+NetLogo 6.0.2
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
@@ -434,7 +441,6 @@ true
 0
 Line -7500403 true 150 150 90 180
 Line -7500403 true 150 150 210 180
-
 @#$#@#$#@
 0
 @#$#@#$#@
