@@ -1,10 +1,37 @@
-globals [parabolic-normalizer]
+globals [
+  on-first-curve?
+  parabolic-scaling-factor
+  curve-shape
+  curve-size
+  path-shape
+  path-size
+  path-color
+  scaled-initial-x1
+  scaled-initial-x2
+]
 
 to setup
   clear-all
-  set parabolic-normalizer max-pxcor / 2 ; i.e. divide width by 4, i.e. 2^2
+  init-vars
   make-line
   make-parabola
+  ask (patch scaled-initial-x1 (linear scaled-initial-x1))
+    [sprout 1 [set size path-size
+               set shape path-shape
+               set color path-color]]
+end
+
+to init-vars
+  set parabolic-scaling-factor max-pxcor / 2 ; i.e. divide width by 4, i.e. 2^2
+  set scaled-initial-x1 min-pxcor + (initial-x1 * 2 * max-pxcor)
+  set curve-shape "circle"
+  set curve-size 2
+  set path-shape "circle"
+  set path-size 2
+  set path-color white
+end
+
+to go
 end
 
 to make-line
@@ -16,7 +43,7 @@ to make-parabola
 end
 
 to-report parabolic [x]
-  let y max-pycor - (round ((x ^ 2) / parabolic-normalizer))
+  let y max-pycor - (round ((x ^ 2) / parabolic-scaling-factor))
   report y
 end
 
@@ -25,17 +52,9 @@ to-report linear [x]
   report x
 end
 
-to-report is-on-original-path [turt]
-  let is-on-path false
-  ask turt [if-else xcor = (linear xcor)
-             [set is-on-path true]
-             [set is-on-path false]]
-  report is-on-path
-end
-
 to display-point-at-patch [point-color]
-  sprout 1 [set size 2
-            set shape "circle"
+  sprout 1 [set size curve-size
+            set shape curve-shape
             set color point-color]
 end
 @#$#@#$#@
@@ -73,6 +92,53 @@ BUTTON
 43
 NIL
 setup
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+SLIDER
+7
+47
+179
+80
+initial-x1
+initial-x1
+0
+1
+0.3
+0.01
+1
+NIL
+HORIZONTAL
+
+SLIDER
+7
+84
+179
+117
+initial-x2
+initial-x2
+0
+1
+0.3
+0.01
+1
+NIL
+HORIZONTAL
+
+BUTTON
+75
+10
+138
+43
+NIL
+go
 NIL
 1
 T
