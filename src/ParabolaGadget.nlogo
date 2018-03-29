@@ -1,29 +1,20 @@
 globals [
   on-first-curve?
   parabolic-scaling-factor
+  scaled-initial-x1
+  scaled-initial-x2
   curve-shape
   curve-size
   path-shape
   path-size
   path-color
-  scaled-initial-x1
-  scaled-initial-x2
+  path-turtle
 ]
-
-to setup
-  clear-all
-  init-vars
-  make-line
-  make-parabola
-  ask (patch scaled-initial-x1 (linear scaled-initial-x1))
-    [sprout 1 [set size path-size
-               set shape path-shape
-               set color path-color]]
-end
 
 to init-vars
   set parabolic-scaling-factor max-pxcor / 2 ; i.e. divide width by 4, i.e. 2^2
   set scaled-initial-x1 min-pxcor + (initial-x1 * 2 * max-pxcor)
+  set on-first-curve? true
   set curve-shape "circle"
   set curve-size 2
   set path-shape "circle"
@@ -31,7 +22,29 @@ to init-vars
   set path-color white
 end
 
+to setup
+  clear-all
+  reset-ticks
+  init-vars
+  make-line
+  make-parabola
+  ask (patch scaled-initial-x1 (linear scaled-initial-x1))
+     [sprout 1 [set path-turtle self
+                pen-down
+                set size path-size
+                set shape path-shape
+                set color path-color]]
+end
+
+
 to go
+  if go-until > 0 and ticks >= go-until [stop]
+  tick-advance 1
+  if-else on-first-curve?
+    [ask path-turtle [setxy xcor (parabolic xcor)]
+                      set on-first-curve? false]
+    [ask path-turtle [setxy (linear ycor) ycor
+                      set on-first-curve? true]]
 end
 
 to make-line
@@ -104,14 +117,14 @@ NIL
 
 SLIDER
 7
-47
+90
 179
-80
+123
 initial-x1
 initial-x1
 0
 1
-0.3
+0.2
 0.01
 1
 NIL
@@ -119,14 +132,14 @@ HORIZONTAL
 
 SLIDER
 7
-84
+124
 179
-117
+157
 initial-x2
 initial-x2
 0
 1
-0.3
+0.2
 0.01
 1
 NIL
@@ -135,9 +148,9 @@ HORIZONTAL
 BUTTON
 75
 10
-138
+137
 43
-NIL
+go once
 go
 NIL
 1
@@ -148,6 +161,38 @@ NIL
 NIL
 NIL
 1
+
+BUTTON
+139
+10
+202
+43
+NIL
+go
+T
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+SLIDER
+7
+48
+179
+81
+go-until
+go-until
+0
+100
+0.0
+1
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
