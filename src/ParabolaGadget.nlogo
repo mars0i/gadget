@@ -171,7 +171,7 @@ SLIDER
 go-until
 go-until
 0
-100
+200
 0.0
 1
 1
@@ -181,39 +181,31 @@ HORIZONTAL
 @#$#@#$#@
 ## WHAT IS IT?
 
-(a general understanding of what the model is trying to show or explain)
+A version of the parabola gadget that Wayne Myrvold describes in *Beyond Chance and Credence* (q.v.)
 
 ## HOW IT WORKS
 
-(what rules the agents use to create the overall behavior of the model)
+Successively draws line segments from the line to the parabola, to the line, to ....
 
 ## HOW TO USE IT
 
-(how to use the model, including a description of each of the items in the Interface tab)
+Use the "initial-x" slider to choose an initial x value at which the path will begin.  Then click the "setup" button.  This will draw the line and parabola, and will put a white dot on the line at that x coordinate.
+
+The "run-once" button will draw a path from the current point on the line to the corresponding point on the parabola, or vice versa.
+
+The "run" button will continue the process forever, or if the "run-until" slider is set to a value other than zero, until that number of steps have been completed.  Note that after a while, the lines will overlap.  At that point it's best to click the "run" button again to stop the process.
 
 ## THINGS TO NOTICE
 
-(suggested things for the user to notice while running the model)
+The number of steps is listed at the top as "ticks".
 
 ## THINGS TO TRY
 
-(suggested things for the user to try to do (move sliders, switches, etc.) with the model)
-
-## EXTENDING THE MODEL
-
-(suggested things to add or change in the Code tab to make the model more complicated, detailed, accurate, etc.)
-
-## NETLOGO FEATURES
-
-(interesting or unusual features of NetLogo that the model uses, particularly in the Code tab; or where workarounds were needed for missing features)
-
-## RELATED MODELS
-
-(models in the NetLogo Models Library and elsewhere which are of related interest)
+Try setting initial-x to different values.
 
 ## CREDITS AND REFERENCES
 
-(a reference to the model's URL on the web if it has one, as well as any other necessary credits, citations, and links)
+Wayne Myrvold, *Beyond Chance and Credence*, MS 2017.
 @#$#@#$#@
 default
 true
