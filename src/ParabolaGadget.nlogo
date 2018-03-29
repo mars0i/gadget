@@ -2,7 +2,6 @@ globals [
   on-first-curve?
   parabolic-scaling-factor
   scaled-initial-x1
-  scaled-initial-x2
   curve-shape
   curve-size
   path-shape
@@ -122,21 +121,6 @@ SLIDER
 123
 initial-x1
 initial-x1
-0
-1
-0.2
-0.01
-1
-NIL
-HORIZONTAL
-
-SLIDER
-7
-124
-179
-157
-initial-x2
-initial-x2
 0
 1
 0.2
