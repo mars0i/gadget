@@ -2,6 +2,8 @@ globals [
   on-first-curve?
   parabolic-scaling-factor
   scaled-initial-x
+  max-coord    ; like max-pxcor, max-pycor, but smaller so there's a margin
+  min-coord
   curve-shape
   curve-size
   path-shape
@@ -11,12 +13,14 @@ globals [
 ]
 
 to init-vars
-  set parabolic-scaling-factor max-pxcor / 2 ; i.e. divide width by 4, i.e. 2^2
-  set scaled-initial-x min-pxcor + (initial-x * 2 * max-pxcor)
+  set max-coord max-pxcor - 5
+  set min-coord max-coord * -1
+  set parabolic-scaling-factor max-coord / 2 ; i.e. divide width by 4, i.e. 2^2
+  set scaled-initial-x min-coord + (initial-x * 2 * max-coord)
   set on-first-curve? true
   set curve-shape "circle"
   set curve-size 2
-  set path-shape "circle 2"
+  set path-shape "circle"
   set path-size 9
   set path-color white
 end
@@ -29,7 +33,6 @@ to setup
   make-parabola
   ask (patch scaled-initial-x (linear scaled-initial-x))
      [sprout 1 [set path-turtle self
-                pen-down
                 set size path-size
                 set shape path-shape
                 set color path-color]]
@@ -39,7 +42,8 @@ end
 to go
   if go-until > 0 and ticks >= go-until [stop]
   tick-advance 1
-  ask path-turtle [setxy xcor (parabolic xcor)
+  ask path-turtle [if-else show-path [pen-down] [pen-up]
+                   setxy xcor (parabolic xcor)
                    setxy (linear ycor) ycor]
 end
 
@@ -48,11 +52,12 @@ to make-line
 end
 
 to make-parabola
-  ask patches with [pycor = (parabolic pxcor)] [display-point-at-patch green]
+  ask patches with [pycor = (round (parabolic pxcor))]
+       [display-point-at-patch green]
 end
 
 to-report parabolic [x]
-  let y max-pycor - (round ((x ^ 2) / parabolic-scaling-factor))
+  let y max-coord - ((x ^ 2) / parabolic-scaling-factor)
   report y
 end
 
@@ -66,12 +71,18 @@ to display-point-at-patch [point-color]
             set shape curve-shape
             set color point-color]
 end
+
+to-report current-x
+  let x 0
+  ask path-turtle [set x xcor]
+  report (x / (2 * max-coord)) + 0.5
+end
 @#$#@#$#@
 GRAPHICS-WINDOW
 210
 10
-619
-420
+629
+430
 -1
 -1
 1.0
@@ -84,10 +95,10 @@ GRAPHICS-WINDOW
 0
 0
 1
--200
-200
--200
-200
+-205
+205
+-205
+205
 0
 0
 1
@@ -169,11 +180,33 @@ go-until
 go-until
 0
 200
-0.0
+153.0
 1
 1
 NIL
 HORIZONTAL
+
+SWITCH
+7
+132
+131
+165
+show-path
+show-path
+0
+1
+-1000
+
+MONITOR
+7
+177
+183
+222
+NIL
+current-x
+17
+1
+11
 
 @#$#@#$#@
 ## WHAT IS IT?
