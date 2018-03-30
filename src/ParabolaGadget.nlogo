@@ -1,23 +1,19 @@
 globals [
-  on-first-curve?
-  parabolic-scaling-factor
-  scaled-initial-x
-  max-coord    ; like max-pxcor, max-pycor, but smaller so there's a margin
-  min-coord
-  curve-shape
-  curve-size
-  path-shape
-  path-size
-  path-color
-  path-turtle
+  max-coord   ; like max-pxcor, max-pycor, but smaller so there's a margin
+  min-coord   ; mutatis mutandis
+  parabolic-scaling-factor ; make parabola size correct
+  curve-shape ; for the line and parabola
+  curve-size  ; ditoo
+  path-shape  ; for the dynamic path
+  path-size   ; ditto
+  path-color  ; ditto
+  path-turtle ; will hold the turtle that draws the path
 ]
 
 to init-vars
   set max-coord max-pxcor - 5
   set min-coord max-coord * -1
   set parabolic-scaling-factor max-coord / 2 ; i.e. divide width by 4, i.e. 2^2
-  set scaled-initial-x min-coord + (initial-x * 2 * max-coord)
-  set on-first-curve? true
   set curve-shape "circle"
   set curve-size 2
   set path-shape "circle 2"
@@ -31,6 +27,7 @@ to setup
   init-vars
   make-line
   make-parabola
+  let scaled-initial-x min-coord + (initial-x * 2 * max-coord)
   ask (patch scaled-initial-x (linear scaled-initial-x))
      [sprout 1 [set path-turtle self
                 set size path-size
@@ -52,14 +49,12 @@ to make-line
 end
 
 to make-parabola
-  let x min-coord
   ask patches with [pycor = (round (parabolic pxcor))]
        [display-point-at-patch green]
 end
 
 to-report parabolic [x]
-  let y max-coord - ((x ^ 2) / parabolic-scaling-factor)
-  report y
+  report max-coord - ((x ^ 2) / parabolic-scaling-factor)
 end
 
 ;; kinda silly, but allows substituation with another function later
