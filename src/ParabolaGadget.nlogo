@@ -16,8 +16,8 @@ to init-vars
   set on-first-curve? true
   set curve-shape "circle"
   set curve-size 2
-  set path-shape "circle"
-  set path-size 2
+  set path-shape "circle 2"
+  set path-size 9
   set path-color white
 end
 
