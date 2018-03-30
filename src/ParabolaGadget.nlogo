@@ -4,7 +4,8 @@ globals [
   parabolic-scaling-factor ; make parabola size correct
   curve-shape ; for the line and parabola
   curve-size  ; ditoo
-  path-shape  ; for the dynamic path
+  path-current-point-shape  ; for the dynamic path
+  path-past-point-shape
   path-size   ; ditto
   path-color  ; ditto
   path-turtle ; will hold the turtle that draws the path
@@ -16,7 +17,8 @@ to init-vars
   set parabolic-scaling-factor max-coord / 2 ; i.e. divide width by 4, i.e. 2^2
   set curve-shape "circle"
   set curve-size 2
-  set path-shape "circle 2"
+  set path-current-point-shape "circle"
+  set path-past-point-shape "circle 2"
   set path-size 9
   set path-color white
 end
@@ -31,7 +33,7 @@ to setup
   ask (patch scaled-initial-x (linear scaled-initial-x))
      [sprout 1 [set path-turtle self
                 set size path-size
-                set shape path-shape
+                set shape path-current-point-shape
                 set color path-color]]
 end
 
@@ -39,6 +41,7 @@ end
 to go
   if go-until > 0 and ticks >= go-until [stop]
   tick-advance 1
+  if show-past-points [ask path-turtle [hatch 1 [set shape path-past-point-shape]]]
   ask path-turtle [if-else show-path [pen-down] [pen-up]
                    setxy xcor (parabolic xcor)
                    setxy (linear ycor) ycor]
@@ -183,10 +186,10 @@ NIL
 HORIZONTAL
 
 SWITCH
-7
-132
-131
-165
+8
+180
+160
+213
 show-path
 show-path
 0
@@ -195,14 +198,25 @@ show-path
 
 MONITOR
 7
-177
+130
 183
-222
+175
 NIL
 current-x
 17
 1
 11
+
+SWITCH
+8
+221
+160
+254
+show-past-points
+show-past-points
+0
+1
+-1000
 
 @#$#@#$#@
 ## WHAT IS IT?
