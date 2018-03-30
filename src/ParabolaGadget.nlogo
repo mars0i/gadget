@@ -39,11 +39,8 @@ end
 to go
   if go-until > 0 and ticks >= go-until [stop]
   tick-advance 1
-  if-else on-first-curve?
-    [ask path-turtle [setxy xcor (parabolic xcor)]
-                      set on-first-curve? false]
-    [ask path-turtle [setxy (linear ycor) ycor
-                      set on-first-curve? true]]
+  ask path-turtle [setxy xcor (parabolic xcor)
+                   setxy (linear ycor) ycor]
 end
 
 to make-line
