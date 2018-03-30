@@ -20,7 +20,7 @@ to init-vars
   set on-first-curve? true
   set curve-shape "circle"
   set curve-size 2
-  set path-shape "circle"
+  set path-shape "circle 2"
   set path-size 9
   set path-color white
 end
@@ -52,6 +52,7 @@ to make-line
 end
 
 to make-parabola
+  let x min-coord
   ask patches with [pycor = (round (parabolic pxcor))]
        [display-point-at-patch green]
 end
@@ -131,7 +132,7 @@ initial-x
 initial-x
 0
 1
-0.52
+0.2
 0.01
 1
 NIL
@@ -193,7 +194,7 @@ SWITCH
 165
 show-path
 show-path
-1
+0
 1
 -1000
 
