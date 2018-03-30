@@ -9,7 +9,11 @@ globals [
   path-size   ; ditto
   path-color  ; ditto
   path-turtle ; will hold the turtle that draws the path
+  past-xs ; list of past points chosen
 ]
+
+breed [path-points path-point]
+path-points-own [my-x my-y]
 
 to init-vars
   set max-coord max-pxcor - 5
@@ -21,30 +25,33 @@ to init-vars
   set path-past-point-shape "circle 2"
   set path-size 9
   set path-color white
+  ;set past-xs [] ; now set in body of setup
 end
 
 to setup
   clear-all
-  reset-ticks
   init-vars
+  let scaled-initial-x min-coord + (initial-x * 2 * max-coord)
+  set past-xs (list scaled-initial-x)
   make-line
   make-parabola
-  let scaled-initial-x min-coord + (initial-x * 2 * max-coord)
   ask (patch scaled-initial-x (linear scaled-initial-x))
-     [sprout 1 [set path-turtle self
+     [sprout-path-points 1 [set path-turtle self
                 set size path-size
                 set shape path-current-point-shape
                 set color path-color]]
+  reset-ticks
 end
 
 
 to go
   if go-until > 0 and ticks >= go-until [stop]
-  tick-advance 1
+  tick
   if show-past-points [ask path-turtle [hatch 1 [set shape path-past-point-shape]]]
   ask path-turtle [if-else show-path [pen-down] [pen-up]
                    setxy xcor (parabolic xcor)
                    setxy (linear ycor) ycor]
+  set past-xs (fput current-x past-xs)
 end
 
 to make-line
@@ -78,9 +85,9 @@ to-report current-x
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-210
+215
 10
-629
+634
 430
 -1
 -1
@@ -105,9 +112,9 @@ ticks
 30.0
 
 BUTTON
-7
 10
-73
+10
+76
 43
 NIL
 setup
@@ -122,9 +129,9 @@ NIL
 1
 
 SLIDER
-7
+10
 90
-179
+182
 123
 initial-x
 initial-x
@@ -137,9 +144,9 @@ NIL
 HORIZONTAL
 
 BUTTON
-75
+78
 10
-137
+140
 43
 go once
 go
@@ -154,9 +161,9 @@ NIL
 1
 
 BUTTON
-139
+142
 10
-202
+205
 43
 NIL
 go
@@ -171,9 +178,9 @@ NIL
 1
 
 SLIDER
-7
+10
 48
-179
+182
 81
 go-until
 go-until
@@ -186,9 +193,9 @@ NIL
 HORIZONTAL
 
 SWITCH
-8
+10
 180
-160
+162
 213
 show-path
 show-path
@@ -197,9 +204,9 @@ show-path
 -1000
 
 MONITOR
-7
+10
 130
-183
+186
 175
 NIL
 current-x
@@ -208,15 +215,33 @@ current-x
 11
 
 SWITCH
-8
+10
 221
-160
+162
 254
 show-past-points
 show-past-points
-0
+1
 1
 -1000
+
+PLOT
+10
+260
+210
+410
+distribution
+NIL
+NIL
+0.0
+1.0
+0.0
+5.0
+true
+false
+"set-histogram-num-bars 50" ""
+PENS
+"default" 1.0 0 -16777216 true "set-plot-pen-mode 1" "histogram past-xs"
 
 @#$#@#$#@
 ## WHAT IS IT?
@@ -573,5 +598,5 @@ true
 Line -7500403 true 150 150 90 180
 Line -7500403 true 150 150 210 180
 @#$#@#$#@
-0
+1
 @#$#@#$#@
