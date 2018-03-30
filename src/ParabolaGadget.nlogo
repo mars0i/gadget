@@ -131,7 +131,7 @@ initial-x
 initial-x
 0
 1
-0.2
+0.52
 0.01
 1
 NIL
@@ -180,7 +180,7 @@ go-until
 go-until
 0
 200
-153.0
+0.0
 1
 1
 NIL
@@ -193,7 +193,7 @@ SWITCH
 165
 show-path
 show-path
-0
+1
 1
 -1000
 
