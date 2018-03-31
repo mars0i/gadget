@@ -99,7 +99,9 @@ to-report linear [x]
 end
 
 to-report binary-z
-  report word "0." (reduce word (to-binary-list z))
+  ifelse z = 0  ; kludge for pre-setup display
+    [report ""] ; ditto
+    [report word "0." (reduce word (to-binary-list z))] ; the real thing
 end
 
 ;; assumes x is in [0,1]
@@ -174,7 +176,7 @@ initial-x
 initial-x
 0
 1
-0.829
+0.2
 0.001
 1
 NIL
@@ -286,7 +288,7 @@ INPUTBOX
 181
 176
 initial-x
-0.829
+0.2
 1
 0
 Number
@@ -295,7 +297,7 @@ MONITOR
 6
 436
 209
-482
+481
 z
 z
 17
@@ -306,7 +308,7 @@ MONITOR
 215
 436
 641
-482
+481
 NIL
 binary-z
 17
