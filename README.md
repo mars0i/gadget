@@ -1,2 +1,2 @@
 # gadget
-Myrvold's parabola gadget (and generalizations)
+Myrvold's parabola gadget
