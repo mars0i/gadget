@@ -10,6 +10,8 @@ globals [
   path-color  ; ditto
   path-turtle ; will hold the turtle that draws the path
   past-xs ; list of past points chosen
+  z ; See Myrovld chapter 4
+  z-pointer-turtle ; hold the pointer for the z location
 ]
 
 breed [path-points path-point]
@@ -26,6 +28,7 @@ to init-vars
   set path-size 9
   set path-color white
   ;set past-xs [] ; now set in body of setup
+  set z 0.5
 end
 
 to setup
@@ -35,23 +38,42 @@ to setup
   set past-xs (list scaled-initial-x)
   make-line
   make-parabola
+  ;; make the point turtle:
   ask (patch scaled-initial-x (linear scaled-initial-x))
      [sprout-path-points 1 [set path-turtle self
-                set size path-size
-                set shape path-current-point-shape
-                set color path-color]]
+                            set size path-size
+                            set shape path-current-point-shape
+                            set color path-color]]
+  ;; make the z pointer turtle:
+  create-turtles 1 [set z-pointer-turtle self
+                    set color orange
+                    set size 15
+                    set ycor min-pycor
+                    set xcor z
+                    facexy 0 0]
   reset-ticks
 end
-
 
 to go
   if go-until > 0 and ticks >= go-until [stop]
   tick
   if show-past-points [ask path-turtle [hatch 1 [set shape path-past-point-shape]]]
+  let curr-xcor 0
   ask path-turtle [if-else show-path [pen-down] [pen-up]
                    setxy xcor (parabolic xcor)
-                   setxy (linear ycor) ycor]
+                   setxy (linear ycor) ycor
+                   set curr-xcor xcor]
   set past-xs (fput current-x past-xs)
+  ;set z (z / 2)
+  set z ifelse-value (curr-xcor <= 0) [z / 2] [1 - (z / 2)]
+  ask z-pointer-turtle [set xcor (min-coord + (z * 2 * max-coord))]
+end
+
+;; called from gui; should be arg-less
+to-report current-x
+  let x 0
+  ask path-turtle [set x xcor]
+  report (x / (2 * max-coord)) + 0.5
 end
 
 to make-line
@@ -82,12 +104,6 @@ to display-point-at-patch [point-color]
   sprout 1 [set size curve-size
             set shape curve-shape
             set color point-color]
-end
-
-to-report current-x
-  let x 0
-  ask path-turtle [set x xcor]
-  report (x / (2 * max-coord)) + 0.5
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
