@@ -112,9 +112,9 @@ ticks
 30.0
 
 BUTTON
+9
 10
-10
-76
+75
 43
 NIL
 setup
@@ -129,24 +129,24 @@ NIL
 1
 
 SLIDER
-10
-90
-182
-123
+8
+80
+180
+113
 initial-x
 initial-x
 0
 1
-0.2
-0.01
+0.517102145
+0.001
 1
 NIL
 HORIZONTAL
 
 BUTTON
-78
+77
 10
-140
+139
 43
 go once
 go
@@ -161,9 +161,9 @@ NIL
 1
 
 BUTTON
-142
+141
 10
-205
+204
 43
 NIL
 go
@@ -178,10 +178,10 @@ NIL
 1
 
 SLIDER
-10
-48
-182
-81
+8
+46
+180
+79
 go-until
 go-until
 0
@@ -193,9 +193,9 @@ NIL
 HORIZONTAL
 
 SWITCH
-10
+7
+179
 180
-162
 213
 show-path
 show-path
@@ -204,10 +204,10 @@ show-path
 -1000
 
 MONITOR
-10
-130
-186
-175
+7
+253
+181
+299
 NIL
 current-x
 17
@@ -215,21 +215,21 @@ current-x
 11
 
 SWITCH
-10
-221
-162
-254
+7
+216
+180
+250
 show-past-points
 show-past-points
-1
+0
 1
 -1000
 
 PLOT
-10
-260
-210
-410
+6
+302
+207
+430
 distribution
 NIL
 NIL
@@ -243,6 +243,17 @@ false
 PENS
 "default" 1.0 0 -16777216 true "set-plot-pen-mode 1" "histogram past-xs"
 
+INPUTBOX
+7
+116
+181
+176
+initial-x
+0.517102145
+1
+0
+Number
+
 @#$#@#$#@
 ## WHAT IS IT?
 
@@ -254,15 +265,19 @@ Successively draws line segments from the line to the parabola, to the line, to 
 
 ## HOW TO USE IT
 
-Use the "initial-x" slider to choose an initial x value at which the path will begin.  Then click the "setup" button.  This will draw the line and parabola, and will put a white dot on the line at that x coordinate.
+Use the "initial-x" slider or text box to choose an initial x value at which the path will begin.  Then click the "setup" button.  This will draw the line and parabola, and will put a white dot on the line at that x coordinate.  (The slider is convenient, but when you use it, you are restricted to the values it's set up to allow.)
 
 The "run-once" button will draw a path from the current point on the line to the corresponding point on the parabola, or vice versa.
 
 The "run" button will continue the process forever, or if the "run-until" slider is set to a value other than zero, until that number of steps have been completed.  Note that after a while, the lines will overlap.  At that point it's best to click the "run" button again to stop the process.
 
+You can turn on/off the display of path lines or the display of past points using the "show-path" and "show-past-points" switches.
+
 ## THINGS TO NOTICE
 
 The number of steps is listed at the top as "ticks".
+
+The current x coordinate (and therefore y coordinate) is listed in the "current-x" box.  A histogram of past x coordinates is given in the "distribution" plot.
 
 ## THINGS TO TRY
 
