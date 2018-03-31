@@ -16,7 +16,7 @@ breed [path-points path-point]
 path-points-own [my-x my-y]
 
 to init-vars
-  set max-coord max-pxcor - 5
+  set max-coord max-pxcor - 7 ; increment should be adjusted to fit world dimensions
   set min-coord max-coord * -1
   set parabolic-scaling-factor max-coord / 2 ; i.e. divide width by 4, i.e. 2^2
   set curve-shape "circle"
@@ -55,12 +55,18 @@ to go
 end
 
 to make-line
-  ask patches with [pxcor = (linear pycor)] [display-point-at-patch red]
+  ask patches with [pxcor = (linear pycor) and in-bounds] [display-point-at-patch red]
 end
 
 to make-parabola
-  ask patches with [pycor = (round (parabolic pxcor))]
+  ask patches with [pycor = (round (parabolic pxcor)) and in-bounds]
        [display-point-at-patch green]
+end
+
+to-report in-bounds
+  report pycor >= min-coord and pycor <= max-coord
+         and
+         pycor >= min-coord and pycor <= max-coord
 end
 
 to-report parabolic [x]
@@ -87,8 +93,8 @@ end
 GRAPHICS-WINDOW
 215
 10
-634
-430
+637
+433
 -1
 -1
 1.0
@@ -101,10 +107,10 @@ GRAPHICS-WINDOW
 0
 0
 1
--205
-205
--205
-205
+-207
+207
+-207
+207
 0
 0
 1
@@ -137,7 +143,7 @@ initial-x
 initial-x
 0
 1
-0.517102145
+0.131
 0.001
 1
 NIL
@@ -186,7 +192,7 @@ go-until
 go-until
 0
 200
-0.0
+109.0
 1
 1
 NIL
@@ -221,7 +227,7 @@ SWITCH
 250
 show-past-points
 show-past-points
-0
+1
 1
 -1000
 
@@ -249,7 +255,7 @@ INPUTBOX
 181
 176
 initial-x
-0.517102145
+0.131
 1
 0
 Number
