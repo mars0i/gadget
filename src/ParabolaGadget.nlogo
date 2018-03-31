@@ -28,7 +28,7 @@ to init-vars
   set path-size 9
   set path-color white
   ;set past-xs [] ; now set in body of setup
-  set z 0.5
+  set z 1
 end
 
 to setup
@@ -58,15 +58,13 @@ to go
   if go-until > 0 and ticks >= go-until [stop]
   tick
   if show-past-points [ask path-turtle [hatch 1 [set shape path-past-point-shape]]]
-  let curr-xcor 0
-  ask path-turtle [if-else show-path [pen-down] [pen-up]
+  ask path-turtle [set z ifelse-value (xcor <= 0) [z / 2] [1 - (z / 2)]
+                   ask z-pointer-turtle [set xcor (min-coord + (z * 2 * max-coord))]
+                   if-else show-path [pen-down] [pen-up]
                    setxy xcor (parabolic xcor)
-                   setxy (linear ycor) ycor
-                   set curr-xcor xcor]
+                   setxy (linear ycor) ycor]
   set past-xs (fput current-x past-xs)
-  ;set z (z / 2)
-  set z ifelse-value (curr-xcor <= 0) [z / 2] [1 - (z / 2)]
-  ask z-pointer-turtle [set xcor (min-coord + (z * 2 * max-coord))]
+
 end
 
 ;; called from gui; should be arg-less
@@ -100,6 +98,23 @@ to-report linear [x]
   report x
 end
 
+to-report binary-z
+  report word "0." (reduce word (to-binary-list z))
+end
+
+;; assumes x is in [0,1]
+to-report to-binary-list [x]
+  report to-binary-aux x 0.5 []
+end
+
+to-report to-binary-aux [x half-power bin-list]
+  let x-rem  x - half-power
+  if x-rem = 0 [report (lput 1 bin-list)]
+  ifelse x-rem > 0
+    [report (to-binary-aux x-rem (half-power / 2) (lput 1 bin-list))]
+    [report (to-binary-aux x (half-power / 2) (lput 0 bin-list))]
+end
+
 to display-point-at-patch [point-color]
   sprout 1 [set size curve-size
             set shape curve-shape
@@ -109,8 +124,8 @@ end
 GRAPHICS-WINDOW
 215
 10
-637
-433
+638
+434
 -1
 -1
 1.0
@@ -159,7 +174,7 @@ initial-x
 initial-x
 0
 1
-0.131
+0.829
 0.001
 1
 NIL
@@ -218,7 +233,7 @@ SWITCH
 7
 179
 180
-213
+212
 show-path
 show-path
 0
@@ -229,7 +244,7 @@ MONITOR
 7
 253
 181
-299
+298
 NIL
 current-x
 17
@@ -240,7 +255,7 @@ SWITCH
 7
 216
 180
-250
+249
 show-past-points
 show-past-points
 1
@@ -252,7 +267,7 @@ PLOT
 302
 207
 430
-distribution
+x distribution
 NIL
 NIL
 0.0
@@ -271,10 +286,32 @@ INPUTBOX
 181
 176
 initial-x
-0.131
+0.829
 1
 0
 Number
+
+MONITOR
+6
+436
+209
+482
+z
+z
+17
+1
+11
+
+MONITOR
+215
+436
+641
+482
+NIL
+binary-z
+17
+1
+11
 
 @#$#@#$#@
 ## WHAT IS IT?
@@ -299,7 +336,9 @@ You can turn on/off the display of path lines or the display of past points usin
 
 The number of steps is listed at the top as "ticks".
 
-The current x coordinate (and therefore y coordinate) is listed in the "current-x" box.  A histogram of past x coordinates is given in the "distribution" plot.
+The current x coordinate (and therefore y coordinate) is listed in the "current-x" box.  A histogram of past x coordinates is given in the "x distribution" plot.
+
+See section 4.4 of Myrvold's book for an explanation of the orange pointer at the bottom and the decimal and binary z values below.  [NOTE I AM NOT SURE THESE ARE RIGHT.  THIS CODE IS STILL EXPERIMENTAL.]
 
 ## THINGS TO TRY
 
@@ -311,7 +350,7 @@ NetLogo model by Marshall Abrams (c) 2018 (GPL 3.0).
 
 An implementation of a mathematical device described in:
 
-Wayne Myrvold, *Beyond Chance and Credence*, MS 2017.
+Wayne Myrvold, *Beyond Chance and Credence*, MS December 10, 2017.
 @#$#@#$#@
 default
 true
