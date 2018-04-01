@@ -352,7 +352,7 @@ Successively draws line segments from the line to the parabola, to the line, to 
 
 ## HOW TO USE IT
 
-Use the "initial-x" slider or text box to choose an initial x value at which the path will begin.  Then click the "setup" button.  This will draw the line and parabola, and will put a white dot on the line at that x coordinate.  (The slider is convenient, but when you use it, you are restricted to the values it's set up to allow.)
+Use the "initial-x" slider or text box to choose an initial x value at which the path will begin.  Then click the "setup" button.  This will draw the line and parabola, and will put a white dot on the line at that x coordinate.  (The slider is convenient, but in the non-web version of the program, it restricts initia-x to the values it's set up to allow, whereas the text box allows entering any value.  In the web version, you can do that with the slider tool as well.)
 
 The "run-once" button will draw a path from the current point on the line to the corresponding point on the parabola, or vice versa.
 
