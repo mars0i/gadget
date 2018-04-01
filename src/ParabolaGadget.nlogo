@@ -206,7 +206,7 @@ initial-x
 initial-x
 0
 1
-0.757
+0.803
 0.001
 1
 NIL
@@ -273,10 +273,10 @@ show-path
 -1000
 
 MONITOR
-205
-165
-380
-210
+5
+255
+180
+300
 x
 current-x
 17
@@ -318,16 +318,16 @@ INPUTBOX
 181
 176
 initial-x
-0.757
+0.803
 1
 0
 Number
 
 MONITOR
-215
-385
-390
-430
+5
+305
+180
+350
 z
 z
 17
@@ -335,21 +335,21 @@ z
 11
 
 MONITOR
-5
-435
-820
-480
+0
+355
+390
+396
 NIL
 binary-z
 17
 1
-11
+10
 
 PLOT
 190
-230
+180
 390
-380
+330
 z distribution
 NIL
 NIL
