@@ -113,10 +113,28 @@ to-report binary-z
 end
 
 ;; assumes x is in [0,1]
+;; new non-recursive version
 to-report to-binary-list [x]
-  report to-binary-aux x 0.5 []
+  let bin-list []
+  let half-power 0.5
+  let x' x
+  while [x' > 0]
+  [
+    let x-rem (x' - half-power)
+    if x-rem = 0 [report (lput 1 bin-list)]
+    set half-power (half-power / 2)
+    ifelse x-rem > 0
+      [set x' x-rem
+       set bin-list (lput 1 bin-list)]
+      [set bin-list (lput 0 bin-list)]
+  ]
 end
 
+;; TODO DELETE ME later
+;; old recursive version (easier to understand, but can't assume tail code elimination)
+to-report to-binary-list-recursive [x]
+  report to-binary-aux x 0.5 []
+end
 to-report to-binary-aux [x half-power bin-list]
   let x-rem  x - half-power
   if x-rem = 0 [report (lput 1 bin-list)]
