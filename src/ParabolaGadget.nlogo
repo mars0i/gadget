@@ -109,7 +109,7 @@ end
 to-report binary-z
   ifelse z = 0  ; kludge for pre-setup display
     [report ""] ; ditto
-    [report word "0." (reduce word (to-binary-list z))] ; the real thing
+    [report word "0." (reduce word (to-binary-list-recursive z))] ; the real thing
 end
 
 ;; assumes x is in [0,1]
