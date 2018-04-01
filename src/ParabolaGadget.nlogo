@@ -1,3 +1,6 @@
+breed [path-points path-point]
+path-points-own [my-x my-y]
+
 globals [
   max-coord   ; like max-pxcor, max-pycor, but smaller so there's a margin
   min-coord   ; mutatis mutandis
@@ -14,9 +17,6 @@ globals [
   z-pointer-turtle ; hold the pointer for the z location
 ]
 
-breed [path-points path-point]
-path-points-own [my-x my-y]
-
 to init-vars
   set max-coord max-pxcor - 7 ; increment should be adjusted to fit world dimensions
   set min-coord max-coord * -1
@@ -28,13 +28,13 @@ to init-vars
   set path-size 9
   set path-color white
   ;set past-xs [] ; now set in body of setup
-  set z 1
+  set z 0.5
 end
 
 to setup
   clear-all
   init-vars
-  let scaled-initial-x min-coord + (initial-x * 2 * max-coord)
+  let scaled-initial-x (coord-to-world-coord initial-x)
   set past-xs (list scaled-initial-x)
   make-line
   make-parabola
@@ -49,8 +49,8 @@ to setup
                     set color orange
                     set size 15
                     set ycor min-pycor
-                    set xcor z
-                    facexy 0 0]
+                    set xcor coord-to-world-coord z
+                    set heading 0]
   reset-ticks
 end
 
@@ -59,7 +59,7 @@ to go
   tick
   if show-past-points [ask path-turtle [hatch 1 [set shape path-past-point-shape]]]
   ask path-turtle [set z ifelse-value (xcor <= 0) [z / 2] [1 - (z / 2)]
-                   ask z-pointer-turtle [set xcor (min-coord + (z * 2 * max-coord))]
+                   ask z-pointer-turtle [set xcor (coord-to-world-coord z)]
                    if-else show-path [pen-down] [pen-up]
                    setxy xcor (parabolic xcor)
                    setxy (linear ycor) ycor]
@@ -67,11 +67,19 @@ to go
 
 end
 
+to-report coord-to-world-coord [n]
+  report min-coord + (n * 2 * max-coord)
+end
+
+to-report world-coord-to-coord [n]
+  report (n / (2 * max-coord)) + 0.5 ; assume world is symmetrical: min = -max
+end
+
 ;; called from gui; should be arg-less
 to-report current-x
   let x 0
   ask path-turtle [set x xcor]
-  report (x / (2 * max-coord)) + 0.5
+  report world-coord-to-coord x
 end
 
 to make-line
@@ -176,7 +184,7 @@ initial-x
 initial-x
 0
 1
-0.2
+0.757
 0.001
 1
 NIL
@@ -288,7 +296,7 @@ INPUTBOX
 181
 176
 initial-x
-0.2
+0.757
 1
 0
 Number
