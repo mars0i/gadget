@@ -14,6 +14,7 @@ globals [
   path-turtle ; will hold the turtle that draws the path
   past-xs ; list of past points chosen
   z ; See Myrovld chapter 4
+  past-zs ; list of past points chosen
   z-pointer-turtle ; hold the pointer for the z location
 ]
 
@@ -29,6 +30,7 @@ to init-vars
   set path-color white
   ;set past-xs [] ; now set in body of setup
   set z 0.5
+  set past-zs [] ; ignore initial value
 end
 
 to setup
@@ -36,8 +38,10 @@ to setup
   init-vars
   let scaled-initial-x (coord-to-world-coord initial-x)
   set past-xs (list scaled-initial-x)
+  no-display
   make-line
   make-parabola
+  display
   ;; make the point turtle:
   ask (patch scaled-initial-x (linear scaled-initial-x))
      [sprout-path-points 1 [set path-turtle self
@@ -64,7 +68,7 @@ to go
                    setxy xcor (parabolic xcor)
                    setxy (linear ycor) ycor]
   set past-xs (fput current-x past-xs)
-
+  set past-zs (fput z past-zs)
 end
 
 to-report coord-to-world-coord [n]
@@ -150,9 +154,9 @@ to display-point-at-patch [point-color]
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-215
+395
 10
-638
+818
 434
 -1
 -1
@@ -177,9 +181,9 @@ ticks
 30.0
 
 BUTTON
-9
 10
-75
+10
+65
 43
 NIL
 setup
@@ -209,9 +213,9 @@ NIL
 HORIZONTAL
 
 BUTTON
-77
+66
 10
-139
+128
 43
 go once
 go
@@ -226,9 +230,9 @@ NIL
 1
 
 BUTTON
-141
+129
 10
-204
+184
 43
 NIL
 go
@@ -269,11 +273,11 @@ show-path
 -1000
 
 MONITOR
-7
-253
-181
-298
-NIL
+205
+165
+380
+210
+x
 current-x
 17
 1
@@ -291,10 +295,10 @@ show-past-points
 -1000
 
 PLOT
-6
-302
-207
-430
+190
+10
+390
+160
 x distribution
 NIL
 NIL
@@ -320,10 +324,10 @@ initial-x
 Number
 
 MONITOR
-6
-436
-209
-481
+215
+385
+390
+430
 z
 z
 17
@@ -331,15 +335,33 @@ z
 11
 
 MONITOR
-215
-436
-641
-481
+5
+435
+820
+480
 NIL
 binary-z
 17
 1
 11
+
+PLOT
+190
+230
+390
+380
+z distribution
+NIL
+NIL
+0.0
+1.0
+0.0
+10.0
+true
+false
+"set-histogram-num-bars 50" ""
+PENS
+"default" 1.0 1 -16777216 true "set-plot-pen-mode 1" "histogram past-zs"
 
 @#$#@#$#@
 ## WHAT IS IT?
