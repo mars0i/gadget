@@ -38,10 +38,8 @@ to setup
   init-vars
   let scaled-initial-x (coord-to-world-coord initial-x)
   set past-xs (list scaled-initial-x)
-  no-display
   make-line
   make-parabola
-  display
   ;; make the point turtle:
   ask (patch scaled-initial-x (linear scaled-initial-x))
      [sprout-path-points 1 [set path-turtle self
