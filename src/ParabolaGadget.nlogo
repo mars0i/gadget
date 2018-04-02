@@ -86,13 +86,19 @@ to-report current-x
   report world-coord-to-coord x
 end
 
+;; simpler but slowed by speed slider: ask patches with [pxcor = (linear pycor) and in-bounds] [display-point-at-patch red]
 to make-line
-  ask patches with [pxcor = (linear pycor) and in-bounds] [display-point-at-patch red]
+  let i min-coord
+  while [i <= max-coord]
+    [ask patch i (linear i) [display-point-at-patch red]
+     set i (i + 1)]
 end
 
 to make-parabola
-  ask patches with [pycor = (round (parabolic pxcor)) and in-bounds]
-       [display-point-at-patch green]
+  let i min-coord
+  while [i <= max-coord]
+    [ask patch i (parabolic i) [display-point-at-patch green]
+     set i (i + 1)]
 end
 
 to-report in-bounds
@@ -206,7 +212,7 @@ initial-x
 initial-x
 0
 1
-0.803
+0.757
 0.001
 1
 NIL
@@ -318,7 +324,7 @@ INPUTBOX
 181
 176
 initial-x
-0.803
+0.757
 1
 0
 Number
