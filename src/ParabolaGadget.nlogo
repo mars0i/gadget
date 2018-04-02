@@ -38,6 +38,7 @@ to setup
   init-vars
   let scaled-initial-x (coord-to-world-coord initial-x)
   set past-xs (list scaled-initial-x)
+  make-midpoint-divider
   make-line
   make-parabola
   ;; make the point turtle:
@@ -82,6 +83,13 @@ to-report current-x
   let x 0
   ask path-turtle [set x xcor]
   report world-coord-to-coord x
+end
+
+to make-midpoint-divider
+  let i min-coord
+  while [i <= max-coord]
+    [ask patch 0 i [display-point-at-patch blue]
+    set i (i + 8)]
 end
 
 ;; simpler but slowed by speed slider: ask patches with [pxcor = (linear pycor) and in-bounds] [display-point-at-patch red]
@@ -210,7 +218,7 @@ initial-x
 initial-x
 0
 1
-0.757
+0.415
 0.001
 1
 NIL
@@ -322,7 +330,7 @@ INPUTBOX
 181
 176
 initial-x
-0.757
+0.415
 1
 0
 Number
@@ -393,6 +401,8 @@ The number of steps is listed at the top as "ticks".
 The current x coordinate (and therefore y coordinate) is listed in the "current-x" box.  A histogram of past x coordinates is given in the "x distribution" plot.
 
 See section 4.4 of Myrvold's book for an explanation of the orange pointer at the bottom and the decimal and binary z values below.  [NOTE I AM NOT SURE THESE ARE RIGHT.  THIS CODE IS STILL EXPERIMENTAL.]
+
+The dotted blue line indicates the midpoint--it is at 0.5.
 
 ## THINGS TO TRY
 
