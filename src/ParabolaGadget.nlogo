@@ -29,7 +29,7 @@ to init-vars
   set path-size 9
   set path-color white
   ;set past-xs [] ; now set in body of setup
-  set z 0.5
+  ;set z 0 ; now set later in setup
   set past-zs [] ; ignore initial value
 end
 
@@ -46,7 +46,9 @@ to setup
      [sprout-path-points 1 [set path-turtle self
                             set size path-size
                             set shape path-current-point-shape
-                            set color path-color]]
+                            set color path-color
+                            set z ifelse-value (xcor <= 0) [0] [1]]]
+
   ;; make the z pointer turtle:
   create-turtles 1 [set z-pointer-turtle self
                     set color orange
@@ -61,7 +63,7 @@ to go
   if go-until > 0 and ticks >= go-until [stop]
   tick
   if show-past-points [ask path-turtle [hatch 1 [set shape path-past-point-shape]]]
-  ask path-turtle [set z ifelse-value (xcor <= 0) [z / 2] [1 - (z / 2)]
+  ask path-turtle [set z ifelse-value (xcor <= 0) [z / 2] [0.5 + (z / 2)]
                    ask z-pointer-turtle [set xcor (coord-to-world-coord z)]
                    if-else show-path [pen-down] [pen-up]
                    setxy xcor (parabolic xcor)
@@ -218,7 +220,7 @@ initial-x
 initial-x
 0
 1
-0.415
+0.156
 0.001
 1
 NIL
@@ -330,7 +332,7 @@ INPUTBOX
 181
 176
 initial-x
-0.415
+0.156
 1
 0
 Number
