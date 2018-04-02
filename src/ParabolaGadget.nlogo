@@ -29,7 +29,7 @@ to init-vars
   set path-size 9
   set path-color white
   ;set past-xs [] ; now set in body of setup
-  ;set z 0 ; now set later in setup
+  set z 0
   set past-zs [] ; ignore initial value
 end
 
@@ -46,9 +46,7 @@ to setup
      [sprout-path-points 1 [set path-turtle self
                             set size path-size
                             set shape path-current-point-shape
-                            set color path-color
-                            set z ifelse-value (xcor <= 0) [0] [1]]]
-
+                            set color path-color]]
   ;; make the z pointer turtle:
   create-turtles 1 [set z-pointer-turtle self
                     set color orange
@@ -63,7 +61,9 @@ to go
   if go-until > 0 and ticks >= go-until [stop]
   tick
   if show-past-points [ask path-turtle [hatch 1 [set shape path-past-point-shape]]]
-  ask path-turtle [set z ifelse-value (xcor <= 0) [z / 2] [0.5 + (z / 2)]
+  ask path-turtle [let divisor ifelse-value (z = 0) [2 ^ ticks] [2]  ; DOESN'T WORK
+                   show (list divisor z)
+                   set z ifelse-value (xcor <= 0) [z / divisor] [(1 + z) / divisor]
                    ask z-pointer-turtle [set xcor (coord-to-world-coord z)]
                    if-else show-path [pen-down] [pen-up]
                    setxy xcor (parabolic xcor)
@@ -125,21 +125,22 @@ to-report linear [x]
 end
 
 to-report binary-z
-  ifelse z = 0  ; kludge for pre-setup display
+  ifelse ticks = 0  ; kludge for pre-setup display
     [report ""] ; ditto
-    [report word "0." (reduce word (to-binary-list-recursive z))] ; the real thing
+    [report word "0." (reduce word (to-binary-list z))] ; the real thing
 end
 
 ;; assumes x is in [0,1]
 ;; new non-recursive version
 to-report to-binary-list [x]
+  if x = 0 [report [0]]
   let bin-list []
   let half-power 0.5
   let x' x
   while [x' > 0]
   [
     let x-rem (x' - half-power)
-    if x-rem = 0 [report (lput 1 bin-list)]
+    if x-rem = 0 [report (lput 1 bin-list)] ; NOTE this is the only return location from the loop
     set half-power (half-power / 2)
     ifelse x-rem > 0
       [set x' x-rem
@@ -220,7 +221,7 @@ initial-x
 initial-x
 0
 1
-0.156
+0.042
 0.001
 1
 NIL
@@ -332,7 +333,7 @@ INPUTBOX
 181
 176
 initial-x
-0.156
+0.042
 1
 0
 Number
