@@ -61,9 +61,7 @@ to go
   if go-until > 0 and ticks >= go-until [stop]
   tick
   if show-past-points [ask path-turtle [hatch 1 [set shape path-past-point-shape]]]
-  ask path-turtle [let divisor ifelse-value (z = 0) [2 ^ ticks] [2]  ; DOESN'T WORK
-                   show (list divisor z)
-                   set z ifelse-value (xcor <= 0) [z / divisor] [(1 + z) / divisor]
+  ask path-turtle [set z ifelse-value (xcor <= 0) [z / 2] [0.5 + (z / 2)]
                    ask z-pointer-turtle [set xcor (coord-to-world-coord z)]
                    if-else show-path [pen-down] [pen-up]
                    setxy xcor (parabolic xcor)
@@ -403,7 +401,9 @@ The number of steps is listed at the top as "ticks".
 
 The current x coordinate (and therefore y coordinate) is listed in the "current-x" box.  A histogram of past x coordinates is given in the "x distribution" plot.
 
-See section 4.4 of Myrvold's book for an explanation of the orange pointer at the bottom and the decimal and binary z values below.  [NOTE I AM NOT SURE THESE ARE RIGHT.  THIS CODE IS STILL EXPERIMENTAL.]
+The little orange point at the bottom of the main area shows the value of z variable.  This is > 0.5 if the *previous* x value was <= 0.5.  The precise value of z is such that if it is displayed in binary, the first digit after the "decimal" point is 0 if the previous value of x was <= 0.5, and 1 if x was > 0.5.  Note that initial steps with x <= 0 give values for z of 0.0, 0.00, 0.000, etc., so they will appear the same, and in fact z will have the value 0.1 after x first has a value > 0.5, no matter how many steps precede this step.  (This representation will break down as the number of timesteps gets large, however, because of NetLogo's floating point number representation.)  
+
+See section 4.4 of Myrvold's MS for further explanation.  Note that the code in the model implements the behavior described in footnote 3 on page 94 in the 12/2017 MS, rather than following the algorithm described on pages 93 and 103.
 
 The dotted blue line indicates the midpoint--it is at 0.5.
 
