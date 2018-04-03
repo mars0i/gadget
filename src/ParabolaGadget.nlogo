@@ -353,8 +353,8 @@ binary-z
 PLOT
 614
 212
-789
-417
+790
+418
 z distribution
 NIL
 NIL
@@ -395,7 +395,7 @@ The current x coordinate (and therefore y coordinate) is listed in the "current-
 
 The little orange point at the bottom of the main area shows the value of z variable.  This is > 0.5 if the *previous* x value was <= 0.5.  The value of z is such that if it is displayed in binary, the first digit after the "decimal" point is 0 if the previous value of x was <= 0.5, and 1 if x was > 0.5.  Note that the non-binary value of z will be approximate after a few dozen steps, but the binary representation will be correc, even though its rightmost digits might not be displayed.
 
-See section 4.4 of Myrvold's MS for further explanation.  Note that the code in the model implements the behavior described in footnote 3 on page 94 in the 12/2017 MS, rather than following the algorithm described on pages 93 and 103.
+See section 4.4 of Myrvold's MS for further explanation.  The code in the model implements the behavior described in footnote 3 on page 94 in the 12/2017 MS.
 
 The dotted blue line indicates the midpoint--it is at 0.5.
 
