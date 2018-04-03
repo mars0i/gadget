@@ -16,6 +16,7 @@ globals [
   z ; See Myrovld chapter 4
   past-zs ; list of past points chosen
   z-pointer-turtle ; hold the pointer for the z location
+  past-x-directions ; list of 0s and 1s representing whether x was <= or > 0.5
 ]
 
 to init-vars
@@ -31,6 +32,7 @@ to init-vars
   ;set past-xs [] ; now set in body of setup
   set z 0
   set past-zs [] ; ignore initial value
+  set past-x-directions []
 end
 
 to setup
@@ -61,7 +63,11 @@ to go
   if go-until > 0 and ticks >= go-until [stop]
   tick
   if show-past-points [ask path-turtle [hatch 1 [set shape path-past-point-shape]]]
-  ask path-turtle [set z ifelse-value (xcor <= 0) [z / 2] [0.5 + (z / 2)]
+  ask path-turtle [ifelse (xcor <= 0)
+                     [set z (z / 2)
+                      set past-x-directions (fput 0 past-x-directions)]
+                     [set z (0.5 + (z / 2))
+                      set past-x-directions (fput 1 past-x-directions)]
                    ask z-pointer-turtle [set xcor (coord-to-world-coord z)]
                    if-else show-path [pen-down] [pen-up]
                    setxy xcor (parabolic xcor)
@@ -125,33 +131,34 @@ end
 to-report binary-z
   ifelse ticks = 0  ; kludge for pre-setup display
     [report ""] ; ditto
-    [report word "0." (reduce word (to-binary-list z))] ; the real thing
+    [report word "0." (reduce word past-x-directions)] ; the real thing
+    ;[report word "0." (reduce word (to-binary-list z))] ; the real thing
 end
 
 ;; assumes x is in [0,1]
 ;; new non-recursive version
-to-report to-binary-list [x]
-  if x = 0 [report [0]]
-  let bin-list []
-  let half-power 0.5
-  let x' x
-  while [x' > 0]
-  [
-    let x-rem (x' - half-power)
-    if x-rem = 0 [report (lput 1 bin-list)] ; NOTE this is the only return location from the loop
-    set half-power (half-power / 2)
-    ifelse x-rem > 0
-      [set x' x-rem
-       set bin-list (lput 1 bin-list)]
-      [set bin-list (lput 0 bin-list)]
-  ]
-end
+;to-report to-binary-list [x]
+;  if x = 0 [report [0]]
+;  let bin-list []
+;  let half-power 0.5
+;  let x' x
+;  while [x' > 0]
+;  [
+;    let x-rem (x' - half-power)
+;    if x-rem = 0 [report (lput 1 bin-list)] ; NOTE this is the only return location from the loop
+;    set half-power (half-power / 2)
+;    ifelse x-rem > 0
+;      [set x' x-rem
+;       set bin-list (lput 1 bin-list)]
+;      [set bin-list (lput 0 bin-list)]
+;  ]
+;end
 @#$#@#$#@
 GRAPHICS-WINDOW
-395
-10
-818
-434
+182
+9
+605
+433
 -1
 -1
 1.0
@@ -262,15 +269,15 @@ SWITCH
 212
 show-path
 show-path
-0
+1
 1
 -1000
 
 MONITOR
-5
-255
-180
-300
+609
+142
+784
+187
 x
 current-x
 17
@@ -289,10 +296,10 @@ show-past-points
 -1000
 
 PLOT
-190
+609
 10
-390
-160
+784
+140
 x distribution
 NIL
 NIL
@@ -318,10 +325,10 @@ initial-x
 Number
 
 MONITOR
-5
-305
-180
-350
+7
+388
+182
+433
 z
 z
 17
@@ -329,10 +336,10 @@ z
 11
 
 MONITOR
-0
-355
-390
-396
+9
+435
+795
+477
 NIL
 binary-z
 17
@@ -340,10 +347,10 @@ binary-z
 10
 
 PLOT
-190
-180
-390
-330
+8
+253
+182
+389
 z distribution
 NIL
 NIL
