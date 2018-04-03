@@ -211,7 +211,7 @@ initial-x
 initial-x
 0
 1
-0.01
+0.1
 0.001
 1
 NIL
@@ -273,15 +273,15 @@ SWITCH
 212
 show-path
 show-path
-1
+0
 1
 -1000
 
 MONITOR
-614
-142
-789
-187
+6
+336
+181
+381
 x
 current-x
 17
@@ -303,7 +303,7 @@ PLOT
 614
 10
 789
-140
+213
 x distribution
 NIL
 NIL
@@ -323,16 +323,16 @@ INPUTBOX
 181
 176
 initial-x
-0.01
+0.1
 1
 0
 Number
 
 MONITOR
-7
-388
-182
-433
+6
+382
+181
+427
 z
 z
 17
@@ -340,10 +340,10 @@ z
 11
 
 MONITOR
-9
-435
-795
-477
+6
+430
+792
+472
 NIL
 binary-z
 17
@@ -351,10 +351,10 @@ binary-z
 10
 
 PLOT
-8
-253
-182
-389
+614
+212
+789
+417
 z distribution
 NIL
 NIL
@@ -393,7 +393,7 @@ The number of steps is listed at the top as "ticks".
 
 The current x coordinate (and therefore y coordinate) is listed in the "current-x" box.  A histogram of past x coordinates is given in the "x distribution" plot.
 
-The little orange point at the bottom of the main area shows the value of z variable.  This is > 0.5 if the *previous* x value was <= 0.5.  The precise value of z is such that if it is displayed in binary, the first digit after the "decimal" point is 0 if the previous value of x was <= 0.5, and 1 if x was > 0.5.  Note that initial steps with x <= 0 give values for z of 0.0, 0.00, 0.000, etc., so they will appear the same, and in fact z will have the value 0.1 after x first has a value > 0.5, no matter how many steps precede this step.  (This representation will break down as the number of timesteps gets large, however, because of NetLogo's floating point number representation.)  
+The little orange point at the bottom of the main area shows the value of z variable.  This is > 0.5 if the *previous* x value was <= 0.5.  The value of z is such that if it is displayed in binary, the first digit after the "decimal" point is 0 if the previous value of x was <= 0.5, and 1 if x was > 0.5.  Note that the non-binary value of z will be approximate after a few dozen steps, but the binary representation will be correc, even though its rightmost digits might not be displayed.
 
 See section 4.4 of Myrvold's MS for further explanation.  Note that the code in the model implements the behavior described in footnote 3 on page 94 in the 12/2017 MS, rather than following the algorithm described on pages 93 and 103.
 
