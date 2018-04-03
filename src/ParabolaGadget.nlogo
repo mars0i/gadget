@@ -343,12 +343,12 @@ MONITOR
 6
 430
 792
-472
+471
 NIL
 binary-z
 17
 1
-10
+11
 
 PLOT
 614
