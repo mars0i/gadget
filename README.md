@@ -1,2 +1,2 @@
 # gadget
-Myrvold's parabola gadget
+tba
