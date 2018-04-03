@@ -59,8 +59,12 @@ to setup
   reset-ticks
 end
 
-to go
+to go-forever-until
   if go-until > 0 and ticks >= go-until [stop]
+  go
+end
+
+to go
   tick
   if show-past-points [ask path-turtle [hatch 1 [set shape path-past-point-shape]]]
   ask path-turtle [ifelse (xcor <= 0)
@@ -155,9 +159,9 @@ end
 ;end
 @#$#@#$#@
 GRAPHICS-WINDOW
-182
+187
 9
-605
+610
 433
 -1
 -1
@@ -234,9 +238,9 @@ BUTTON
 129
 10
 184
-43
-NIL
+44
 go
+go-forever-until
 T
 1
 T
@@ -274,9 +278,9 @@ show-path
 -1000
 
 MONITOR
-609
+614
 142
-784
+789
 187
 x
 current-x
@@ -296,9 +300,9 @@ show-past-points
 -1000
 
 PLOT
-609
+614
 10
-784
+789
 140
 x distribution
 NIL
