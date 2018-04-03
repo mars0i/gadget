@@ -107,10 +107,10 @@ to make-parabola
      set i (i + 1)]
 end
 
-to-report in-bounds
-  report pycor >= min-coord and pycor <= max-coord
-         and
-         pycor >= min-coord and pycor <= max-coord
+to display-point-at-patch [point-color]
+  sprout 1 [set size curve-size
+            set shape curve-shape
+            set color point-color]
 end
 
 to-report parabolic [x]
@@ -145,25 +145,6 @@ to-report to-binary-list [x]
        set bin-list (lput 1 bin-list)]
       [set bin-list (lput 0 bin-list)]
   ]
-end
-
-;; TODO DELETE ME later
-;; old recursive version (easier to understand, but can't assume tail code elimination)
-;to-report to-binary-list-recursive [x]
-;  report to-binary-aux x 0.5 []
-;end
-;to-report to-binary-aux [x half-power bin-list]
-;  let x-rem  x - half-power
-;  if x-rem = 0 [report (lput 1 bin-list)]
-;  ifelse x-rem > 0
-;    [report (to-binary-aux x-rem (half-power / 2) (lput 1 bin-list))]
-;    [report (to-binary-aux x (half-power / 2) (lput 0 bin-list))]
-;end
-
-to display-point-at-patch [point-color]
-  sprout 1 [set size curve-size
-            set shape curve-shape
-            set color point-color]
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -219,7 +200,7 @@ initial-x
 initial-x
 0
 1
-0.623
+0.01
 0.001
 1
 NIL
@@ -331,7 +312,7 @@ INPUTBOX
 181
 176
 initial-x
-0.623
+0.01
 1
 0
 Number
