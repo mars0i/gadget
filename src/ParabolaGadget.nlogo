@@ -1,5 +1,5 @@
 breed [path-points path-point]
-path-points-own [my-x my-y]
+path-points-own [the-x]
 
 globals [
   max-coord   ; like max-pxcor, max-pycor, but smaller so there's a margin
@@ -39,7 +39,7 @@ to setup
   clear-all
   init-vars
   let scaled-initial-x (coord-to-world-coord initial-x)
-  set past-xs (list scaled-initial-x)
+  set past-xs (list initial-x)
   make-midpoint-divider
   make-line
   make-parabola
@@ -211,7 +211,7 @@ initial-x
 initial-x
 0
 1
-0.1
+0.7515
 0.001
 1
 NIL
@@ -323,7 +323,7 @@ INPUTBOX
 181
 176
 initial-x
-0.1
+0.7515
 1
 0
 Number
@@ -343,7 +343,7 @@ MONITOR
 6
 430
 792
-471
+475
 NIL
 binary-z
 17
