@@ -1,5 +1,5 @@
 breed [path-points path-point]
-path-points-own [the-x]
+path-points-own []
 
 globals [
   max-coord   ; like max-pxcor, max-pycor, but smaller so there's a margin
@@ -46,6 +46,7 @@ to setup
   ;; make the point turtle:
   ask (patch scaled-initial-x (linear scaled-initial-x))
      [sprout-path-points 1 [set path-turtle self
+                            set xcor scaled-initial-x ; set explicitly--don't inherit patch coord
                             set size path-size
                             set shape path-current-point-shape
                             set color path-color]]
@@ -211,7 +212,7 @@ initial-x
 initial-x
 0
 1
-0.7515
+0.74999
 0.001
 1
 NIL
@@ -323,7 +324,7 @@ INPUTBOX
 181
 176
 initial-x
-0.7515
+0.74999
 1
 0
 Number
@@ -402,6 +403,16 @@ The dotted blue line indicates the midpoint--it is at 0.5.
 ## THINGS TO TRY
 
 Try setting initial-x to different values.
+
+## Notes on the code
+
+The x circle doesn't store an x value; it stores the xcor, the coordinate in the NetLogo display system, and then this is converted to an x value as needed, using a function defined here world-coord-to-coord (which inverse coord-to-world-coord).
+
+The z pointer, by contrast, is defined by a separate z variable, which is converted to NetLogo coordinates as needed.
+
+This difference is inelegant, but it's not worth changing at this point in time.
+
+Why are y values on the line passed through the function *linear*, which just returns its argument unchanged?  Because this way, it's obvious where you'd put a different function if you wanted some other kind of gadget, and it doesn't cost much.
 
 ## CREDITS AND REFERENCES
 
