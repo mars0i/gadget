@@ -436,6 +436,8 @@ The "run" button will continue the process forever, or if the "run-until" slider
 
 You can turn on/off the display of path lines or the display of past points using the "show-path" and "show-past-points" switches.
 
+If you want to see the model run from a second point simultaneously, set extra-initial-x so some value other than 0.  This will have no effect on z or the plots; those only concern the main path.  However, you can use this extra path to make vivid the fact that starting from points that are very near to each other will end up producing paths that are very different.
+
 ## THINGS TO NOTICE
 
 The number of steps is listed at the top as "ticks".
