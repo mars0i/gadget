@@ -38,25 +38,15 @@ end
 to setup
   clear-all
   init-vars
-  let scaled-initial-x (coord-to-world-coord initial-x)
-  set past-xs (list initial-x)
+  no-display
   make-midpoint-divider
   make-line
   make-parabola
-  ;; make the point turtle:
-  ask (patch scaled-initial-x (linear scaled-initial-x))
-     [sprout-path-points 1 [set path-turtle self
-                            set xcor scaled-initial-x ; set explicitly--don't inherit patch coord
-                            set size path-size
-                            set shape path-current-point-shape
-                            set color path-color]]
-  ;; make the z pointer turtle:
-  create-turtles 1 [set z-pointer-turtle self
-                    set color orange
-                    set size 15
-                    set ycor min-pycor
-                    set xcor coord-to-world-coord z
-                    set heading 0]
+  display
+  let scaled-initial-x (coord-to-world-coord initial-x)
+  set past-xs (list initial-x)
+  set path-turtle (make-path-point initial-x)
+  set z-pointer-turtle (make-z-pointer z)
   reset-ticks
 end
 
@@ -79,6 +69,30 @@ to go
                    setxy (linear ycor) ycor]
   set past-xs (fput current-x past-xs)
   set past-zs (fput z past-zs)
+end
+
+to-report make-path-point [init-x]
+  let scaled-init-x (coord-to-world-coord init-x)
+  let path-turt "not yet"
+  ask (patch scaled-init-x (linear scaled-init-x))
+    [sprout-path-points 1 [set path-turt self
+                           set xcor scaled-init-x ; set explicitly--don't inherit patch coord
+                           set size path-size
+                           set shape path-current-point-shape
+                           set color path-color]] ; maybe change this
+  report path-turt
+end
+
+to-report make-z-pointer [init-z]
+  let z-pointer-turt "not yet"
+  create-turtles 1 [set z-pointer-turt self
+                    set xcor (coord-to-world-coord init-z)
+                    set ycor min-pycor
+                    set size 15
+                    ; shape is default turtle shape
+                    set heading 0
+                    set color orange]
+  report z-pointer-turt
 end
 
 to-report coord-to-world-coord [n]
@@ -212,7 +226,7 @@ initial-x
 initial-x
 0
 1
-0.74999
+0.749
 0.001
 1
 NIL
@@ -324,7 +338,7 @@ INPUTBOX
 181
 176
 initial-x
-0.74999
+0.749
 1
 0
 Number
