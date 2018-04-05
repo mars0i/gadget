@@ -31,7 +31,7 @@ to init-vars
   set path-past-point-shape "circle 2"
   set path-size 9
   set default-path-color white
-  set extra-path-color cyan
+  set extra-path-color sky
   ;set past-xs [] ; now set in body of setup
   set z 0
   set past-zs [] ; ignore initial value
@@ -47,9 +47,9 @@ to setup
   make-line
   make-parabola
   set past-xs (list initial-x)
-  set path-turtle (make-path-point initial-x default-path-color)
   if extra-initial-x > 0
     [set extra-path-turtle (make-path-point extra-initial-x extra-path-color)]
+  set path-turtle (make-path-point initial-x default-path-color)
   set z-pointer-turtle (make-z-pointer z)
   reset-ticks
 end
@@ -208,8 +208,8 @@ GRAPHICS-WINDOW
 207
 -207
 207
-1
-1
+0
+0
 1
 ticks
 30.0
@@ -240,7 +240,7 @@ initial-x
 initial-x
 0
 1
-0.7499
+0.749
 0.001
 1
 NIL
@@ -264,9 +264,9 @@ NIL
 1
 
 BUTTON
-129
+130
 10
-184
+185
 44
 go
 go-forever-until
@@ -352,7 +352,7 @@ INPUTBOX
 181
 176
 initial-x
-0.7499
+0.749
 1
 0
 Number
@@ -403,7 +403,7 @@ INPUTBOX
 152
 335
 extra-initial-x
-0.7498
+0.0
 1
 0
 Number
