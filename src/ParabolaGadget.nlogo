@@ -93,15 +93,14 @@ to-report make-z-pointer [init-z]
 end
 
 to update-path-turtle [path-turt]
-  ask path-turt [if extra-initial-x > 0 [update-z]
+  ask path-turt [if self = path-turtle [update-z xcor]
                  if-else show-path [pen-down] [pen-up]
                  setxy xcor (parabolic xcor)
                  setxy (linear ycor) ycor]
 end
 
-;; turtle procedure
-to update-z
-  ifelse (xcor <= 0)
+to update-z [path-turtle-xcor]
+  ifelse (path-turtle-xcor <= 0)
     [set z (z / 2)
      set past-x-directions (fput 0 past-x-directions)]
     [set z (0.5 + (z / 2))
