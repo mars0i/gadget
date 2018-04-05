@@ -46,7 +46,6 @@ to setup
   make-midpoint-divider
   make-line
   make-parabola
-  let scaled-initial-x (coord-to-world-coord initial-x)
   set past-xs (list initial-x)
   set path-turtle (make-path-point initial-x default-path-color)
   if extra-initial-x > 0
