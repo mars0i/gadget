@@ -10,8 +10,10 @@ globals [
   path-current-point-shape  ; for the dynamic path
   path-past-point-shape
   path-size   ; ditto
-  path-color  ; ditto
+  default-path-color  ; ditto
+  extra-path-color ; for a second path
   path-turtle ; will hold the turtle that draws the path
+  extra-path-turtle ; ditto for a second turtle
   past-xs ; list of past points chosen
   z ; See Myrovld chapter 4
   past-zs ; list of past points chosen
@@ -28,11 +30,14 @@ to init-vars
   set path-current-point-shape "circle"
   set path-past-point-shape "circle 2"
   set path-size 9
-  set path-color white
+  set default-path-color white
+  set extra-path-color cyan
   ;set past-xs [] ; now set in body of setup
   set z 0
   set past-zs [] ; ignore initial value
   set past-x-directions []
+  ; extra-initial-x will have its default value of 0 unless it's been set
+  set extra-path-turtle "not yet"
 end
 
 to setup
@@ -45,7 +50,9 @@ to setup
   display
   let scaled-initial-x (coord-to-world-coord initial-x)
   set past-xs (list initial-x)
-  set path-turtle (make-path-point initial-x)
+  set path-turtle (make-path-point initial-x default-path-color)
+  if extra-initial-x > 0
+    [set extra-path-turtle (make-path-point extra-initial-x extra-path-color)]
   set z-pointer-turtle (make-z-pointer z)
   reset-ticks
 end
@@ -58,20 +65,13 @@ end
 to go
   tick
   if show-past-points [ask path-turtle [hatch 1 [set shape path-past-point-shape]]]
-  ask path-turtle [ifelse (xcor <= 0)
-                     [set z (z / 2)
-                      set past-x-directions (fput 0 past-x-directions)]
-                     [set z (0.5 + (z / 2))
-                      set past-x-directions (fput 1 past-x-directions)]
-                   ask z-pointer-turtle [set xcor (coord-to-world-coord z)]
-                   if-else show-path [pen-down] [pen-up]
-                   setxy xcor (parabolic xcor)
-                   setxy (linear ycor) ycor]
+  if extra-initial-x > 0 [update-path-turtle extra-path-turtle]
+  update-path-turtle path-turtle
   set past-xs (fput current-x past-xs)
   set past-zs (fput z past-zs)
 end
 
-to-report make-path-point [init-x]
+to-report make-path-point [init-x colour]
   let scaled-init-x (coord-to-world-coord init-x)
   let path-turt "not yet"
   ask (patch scaled-init-x (linear scaled-init-x))
@@ -79,7 +79,7 @@ to-report make-path-point [init-x]
                            set xcor scaled-init-x ; set explicitly--don't inherit patch coord
                            set size path-size
                            set shape path-current-point-shape
-                           set color path-color]] ; maybe change this
+                           set color colour]] ; maybe change this
   report path-turt
 end
 
@@ -93,6 +93,23 @@ to-report make-z-pointer [init-z]
                     set heading 0
                     set color orange]
   report z-pointer-turt
+end
+
+to update-path-turtle [path-turt]
+  ask path-turt [if extra-initial-x > 0 [update-z]
+                 if-else show-path [pen-down] [pen-up]
+                 setxy xcor (parabolic xcor)
+                 setxy (linear ycor) ycor]
+end
+
+;; turtle procedure
+to update-z
+  ifelse (xcor <= 0)
+    [set z (z / 2)
+     set past-x-directions (fput 0 past-x-directions)]
+    [set z (0.5 + (z / 2))
+     set past-x-directions (fput 1 past-x-directions)]
+  ask z-pointer-turtle [set xcor (coord-to-world-coord z)]
 end
 
 to-report coord-to-world-coord [n]
@@ -226,7 +243,7 @@ initial-x
 initial-x
 0
 1
-0.749
+0.7499
 0.001
 1
 NIL
@@ -293,10 +310,10 @@ show-path
 -1000
 
 MONITOR
-6
-336
-181
-381
+5
+345
+180
+390
 x
 current-x
 17
@@ -317,7 +334,7 @@ show-past-points
 PLOT
 614
 10
-789
+839
 213
 x distribution
 NIL
@@ -338,16 +355,16 @@ INPUTBOX
 181
 176
 initial-x
-0.749
+0.7499
 1
 0
 Number
 
 MONITOR
-6
-382
-181
-427
+5
+391
+180
+436
 z
 z
 17
@@ -355,10 +372,10 @@ z
 11
 
 MONITOR
-6
-430
-792
-475
+5
+435
+840
+480
 NIL
 binary-z
 17
@@ -368,7 +385,7 @@ binary-z
 PLOT
 614
 212
-790
+839
 418
 z distribution
 NIL
@@ -382,6 +399,27 @@ false
 "set-histogram-num-bars 50" ""
 PENS
 "default" 1.0 1 -16777216 true "set-plot-pen-mode 1" "histogram past-zs"
+
+INPUTBOX
+5
+275
+152
+335
+extra-initial-x
+0.7498
+1
+0
+Number
+
+TEXTBOX
+10
+258
+190
+274
+Ignored if not > 0:
+11
+0.0
+1
 
 @#$#@#$#@
 ## WHAT IS IT?
