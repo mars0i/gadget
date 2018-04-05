@@ -43,11 +43,9 @@ end
 to setup
   clear-all
   init-vars
-  no-display
   make-midpoint-divider
   make-line
   make-parabola
-  display
   let scaled-initial-x (coord-to-world-coord initial-x)
   set past-xs (list initial-x)
   set path-turtle (make-path-point initial-x default-path-color)
@@ -211,8 +209,8 @@ GRAPHICS-WINDOW
 207
 -207
 207
-0
-0
+1
+1
 1
 ticks
 30.0
@@ -415,7 +413,7 @@ TEXTBOX
 10
 258
 190
-274
+276
 Ignored if not > 0:
 11
 0.0
