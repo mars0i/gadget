@@ -207,8 +207,8 @@ GRAPHICS-WINDOW
 207
 -207
 207
-0
-0
+1
+1
 1
 ticks
 30.0
@@ -239,7 +239,7 @@ initial-x
 initial-x
 0
 1
-0.749
+0.751
 0.001
 1
 NIL
@@ -351,7 +351,7 @@ INPUTBOX
 181
 176
 initial-x
-0.749
+0.751
 1
 0
 Number
@@ -777,7 +777,7 @@ false
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 @#$#@#$#@
-NetLogo 6.0.2
+NetLogo 6.0.3
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
