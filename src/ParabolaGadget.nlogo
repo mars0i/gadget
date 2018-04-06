@@ -413,7 +413,7 @@ TEXTBOX
 190
 276
 Ignored if not > 0:
-11
+12
 0.0
 1
 
