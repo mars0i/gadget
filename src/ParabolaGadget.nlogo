@@ -116,6 +116,7 @@ to update-path-turtle [path-turt]
                  setxy (linear ycor) ycor]
 end
 
+;; based on 2017/2018 footnote, not body text. see email.
 to update-z [path-turtle-xcor]
   ifelse (path-turtle-xcor <= 0)
     [set z (z / 2)
@@ -172,7 +173,7 @@ to-report parabolic [x]
   report max-coord - ((x ^ 2) / parabolic-scaling-factor)
 end
 
-;; kinda silly, but allows substituation with another function later
+;; kinda silly, but allows substitution with another function later
 to-report linear [x]
   report x
 end
