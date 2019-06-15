@@ -14,8 +14,12 @@ globals [
   extra-path-color ; for a second path
   path-turtle ; will hold the turtle that draws the path
   extra-path-turtle ; ditto for a second turtle
+  parabolo-color
+  diagonal-color
+  patches-color
+  divider-color
   past-xs ; list of past points chosen
-  z ; See Myrovld chapter 4
+  z ; See Myrovld chapter 4: Code below is based on footnote in 2017, 2018 drafts, not text body
   past-zs ; list of past points chosen
   z-pointer-turtle ; hold the pointer for the z location
   past-x-directions ; list of 0s and 1s representing whether x was <= or > 0.5
@@ -30,9 +34,21 @@ to init-vars
   set path-current-point-shape "circle"
   set path-past-point-shape "circle 2"
   set path-size 9
-  set default-path-color white
-  set extra-path-color sky
-  ;set past-xs [] ; now set in body of setup
+  if-else color-display [
+    set default-path-color white
+    set parabolo-color green
+    set diagonal-color red
+    set patches-color black
+    set extra-path-color sky
+    set divider-color blue
+  ][
+    set default-path-color black
+    set parabolo-color gray
+    set diagonal-color gray
+    set patches-color white
+    set extra-path-color sky
+    set divider-color blue ; should be unused for monochrome, but setting it so it will be noticeable if it is
+  ]
   set z 0
   set past-zs [] ; ignore initial value
   set past-x-directions []
@@ -43,14 +59,15 @@ end
 to setup
   clear-all
   init-vars
-  make-midpoint-divider
-  make-line
+  ask patches [set pcolor patches-color]
+  if color-display [make-midpoint-divider] ; monochrome display should be simpler, for publications
+  make-diagonal
   make-parabola
   set past-xs (list initial-x)
   if extra-initial-x > 0
     [set extra-path-turtle (make-path-point extra-initial-x extra-path-color)]
   set path-turtle (make-path-point initial-x default-path-color)
-  set z-pointer-turtle (make-z-pointer z)
+  if color-display [set z-pointer-turtle (make-z-pointer z)] ; monochrome is simple, for publications
   reset-ticks
 end
 
@@ -105,7 +122,7 @@ to update-z [path-turtle-xcor]
      set past-x-directions (fput 0 past-x-directions)]
     [set z (0.5 + (z / 2))
      set past-x-directions (fput 1 past-x-directions)]
-  ask z-pointer-turtle [set xcor (coord-to-world-coord z)]
+  if color-display [ask z-pointer-turtle [set xcor (coord-to-world-coord z)]] ; not for publication images
 end
 
 to-report coord-to-world-coord [n]
@@ -126,22 +143,22 @@ end
 to make-midpoint-divider
   let i min-coord
   while [i <= max-coord]
-    [ask patch 0 i [display-point-at-patch blue]
+    [ask patch 0 i [display-point-at-patch divider-color]
     set i (i + 8)]
 end
 
 ;; simpler but slowed by speed slider: ask patches with [pxcor = (linear pycor) and in-bounds] [display-point-at-patch red]
-to make-line
+to make-diagonal
   let i min-coord
   while [i <= max-coord]
-    [ask patch i (linear i) [display-point-at-patch red]
+    [ask patch i (linear i) [display-point-at-patch diagonal-color]
      set i (i + 1)]
 end
 
 to make-parabola
   let i min-coord
   while [i <= max-coord]
-    [ask patch i (parabolic i) [display-point-at-patch green]
+    [ask patch i (parabolic i) [display-point-at-patch parabolo-color]
      set i (i + 1)]
 end
 
@@ -189,10 +206,10 @@ end
 GRAPHICS-WINDOW
 187
 9
-610
-433
--1
--1
+612
+455
+207
+207
 1.0
 1
 10
@@ -239,7 +256,7 @@ initial-x
 initial-x
 0
 1
-0.751
+0.223
 0.001
 1
 NIL
@@ -288,7 +305,7 @@ go-until
 go-until
 0
 200
-0.0
+0
 1
 1
 NIL
@@ -351,7 +368,7 @@ INPUTBOX
 181
 176
 initial-x
-0.751
+0.223
 1
 0
 Number
@@ -368,10 +385,10 @@ z
 11
 
 MONITOR
-5
-435
-840
-480
+7
+460
+842
+505
 NIL
 binary-z
 17
@@ -402,7 +419,7 @@ INPUTBOX
 152
 335
 extra-initial-x
-0.0
+0
 1
 0
 Number
@@ -416,6 +433,17 @@ Ignored if not > 0:
 12
 0.0
 1
+
+SWITCH
+5
+515
+192
+548
+color-display
+color-display
+0
+1
+-1000
 
 @#$#@#$#@
 ## WHAT IS IT?
@@ -466,7 +494,7 @@ Why are y values on the line passed through the function *linear*, which just re
 
 ## CREDITS AND REFERENCES
 
-NetLogo model by Marshall Abrams (c) 2018 (GPL 3.0). 
+NetLogo model by Marshall Abrams (c) 2018 (GPL 3.0).
 
 An implementation of a mathematical device described in:
 
@@ -776,8 +804,9 @@ false
 0
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
+
 @#$#@#$#@
-NetLogo 6.0.3
+NetLogo 5.3.1
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
@@ -793,6 +822,7 @@ true
 0
 Line -7500403 true 150 150 90 180
 Line -7500403 true 150 150 210 180
+
 @#$#@#$#@
 1
 @#$#@#$#@
