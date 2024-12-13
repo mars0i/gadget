@@ -14,7 +14,7 @@ globals [
   extra-path-color ; for a second path
   path-turtle ; will hold the turtle that draws the path
   extra-path-turtle ; ditto for a second turtle
-  parabolo-color
+  parabola-color
   diagonal-color
   patches-color
   divider-color
@@ -28,7 +28,7 @@ globals [
 to init-vars
   set max-coord max-pxcor - 7 ; increment should be adjusted to fit world dimensions
   set min-coord max-coord * -1
-  set parabolic-scaling-factor max-coord / 2 ; i.e. divide width by 4, i.e. 2^2
+  set parabolic-scaling-factor max-coord / 2 ; i.e. divide width by 4 (width is 2 x max-coord), i.e. 2^2
   set curve-shape "circle"
   set curve-size 2
   set path-current-point-shape "circle"
@@ -36,14 +36,14 @@ to init-vars
   set path-size 9
   if-else color-display [
     set default-path-color white
-    set parabolo-color green
+    set parabola-color green
     set diagonal-color red
     set patches-color black
     set extra-path-color sky
     set divider-color blue
   ][
     set default-path-color black
-    set parabolo-color gray
+    set parabola-color gray
     set diagonal-color gray
     set patches-color white
     set extra-path-color sky
@@ -159,7 +159,7 @@ end
 to make-parabola
   let i min-coord
   while [i <= max-coord]
-    [ask patch i (parabolic i) [display-point-at-patch parabolo-color]
+    [ask patch i (parabolic i) [display-point-at-patch parabola-color]
      set i (i + 1)]
 end
 
@@ -207,10 +207,10 @@ end
 GRAPHICS-WINDOW
 187
 9
-612
-455
-207
-207
+610
+433
+-1
+-1
 1.0
 1
 10
@@ -257,7 +257,7 @@ initial-x
 initial-x
 0
 1
-0.223
+0.99
 0.001
 1
 NIL
@@ -298,15 +298,15 @@ NIL
 1
 
 SLIDER
-8
-46
-180
-79
+194
+516
+366
+549
 go-until
 go-until
 0
 200
-0
+10000.0
 1
 1
 NIL
@@ -341,7 +341,7 @@ SWITCH
 249
 show-past-points
 show-past-points
-1
+0
 1
 -1000
 
@@ -369,7 +369,7 @@ INPUTBOX
 181
 176
 initial-x
-0.223
+0.99
 1
 0
 Number
@@ -420,7 +420,7 @@ INPUTBOX
 152
 335
 extra-initial-x
-0
+0.0
 1
 0
 Number
@@ -442,9 +442,47 @@ SWITCH
 548
 color-display
 color-display
-0
+1
 1
 -1000
+
+INPUTBOX
+370
+506
+518
+566
+go-until
+10000.0
+1
+0
+Number
+
+BUTTON
+6
+46
+184
+80
+NIL
+set initial-x random-float 1
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+TEXTBOX
+10
+442
+801
+463
+The z calculation is from an early draft of Myrold's Beyond Chance and Credence, and doesn't correspond to the published version.
+11
+0.0
+1
 
 @#$#@#$#@
 ## WHAT IS IT?
@@ -805,9 +843,8 @@ false
 0
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
-
 @#$#@#$#@
-NetLogo 5.3.1
+NetLogo 6.1.1
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
@@ -823,7 +860,6 @@ true
 0
 Line -7500403 true 150 150 90 180
 Line -7500403 true 150 150 210 180
-
 @#$#@#$#@
 1
 @#$#@#$#@
